@@ -21,7 +21,7 @@ export async function runComms(
   const tools: ToolDef[] = [
     {
       name: 'send_sms',
-      description: 'Envía SMS masivo a clientes afectados. Máximo 160 caracteres. Debe mencionar Iberdrola.',
+      description: 'Envía SMS masivo a clientes afectados. Máximo 160 caracteres. Debe mencionar EDP Distribuição.',
       input_schema: {
         type: 'object' as const,
         properties: {
@@ -43,7 +43,7 @@ export async function runComms(
     },
     {
       name: 'send_press_release',
-      description: 'Publica nota de prensa para medios de comunicación locales de Girona.',
+      description: 'Publica nota de prensa / comunicado para medios de comunicación locales de Lisboa.',
       input_schema: {
         type: 'object' as const,
         properties: {
@@ -56,16 +56,16 @@ export async function runComms(
         commsMessages.push({ channel: 'press', msg });
         emit({ type: 'comms', channel: 'press', msg });
         emit({ type: 'action', agent: 'comms', system: 'SAP Customer Experience', msg: params.language === 'en'
-          ? `Press release published via SAP CX → local Girona media (El Punt Avui, Diari de Girona)`
+          ? `Press release published via SAP CX → Lisboa media (Público, Expresso, RTP, TSF)`
           : params.language === 'pt'
-          ? `Comunicado de imprensa publicado via SAP CX → media local de Girona (El Punt Avui, Diari de Girona)`
-          : `Nota de prensa publicada vía SAP CX → medios locales Girona (El Punt Avui, Diari de Girona)` });
+          ? `Comunicado de imprensa publicado via SAP CX → media Lisboa (Público, Expresso, RTP, TSF)`
+          : `Comunicado de prensa publicado vía SAP CX → medios Lisboa (Público, Expresso, RTP, TSF)` });
         return 'Nota de prensa enviada.';
       },
     },
     {
       name: 'send_regulatory',
-      description: 'Envía notificación formal al regulador (CTEPC/CNMC) sobre el incidente.',
+      description: 'Envía notificación formal al regulador ERSE y a la Proteção Civil (ANPC) sobre el incidente.',
       input_schema: {
         type: 'object' as const,
         properties: {
@@ -103,14 +103,14 @@ export async function runComms(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Communications Insight Agent del sistema de Respuesta a Tormentas de EDP (Girona).
+    systemPrompt: `Eres el agente Communications Insight Agent del sistema de Respuesta a Tormentas de EDP Distribuição (AML Lisboa).
 Tu misión: redactar y enviar 3 comunicaciones obligatorias en este orden:
-1. send_sms: conciso (≤160 chars), menciona EDP, número de clientes y tiempo estimado de restauración
-2. send_press_release: nota formal para medios locales (El Punt Avui, Diari de Girona, RAC1, Catalunya Ràdio). Puedes escribirla en catalán.
-3. send_regulatory: notificación técnica formal para ERSE/CNMC con datos del incidente${hadConflict ? '\nIMPORTANTE: Hay conflicto de recursos (material limitado). Menciónalo en la notificación regulatoria.' : ''}${criticalAtRisk.length > 0 ? `\nALERTA: ${criticalAtRisk.length} sitio(s) crítico(s) con batería bajo el umbral SLA. Menciónalo en la notificación regulatoria.` : ''}
+1. send_sms: conciso (≤160 chars), menciona EDP Distribuição, número de clientes y tiempo estimado de restauración
+2. send_press_release: comunicado formal para medios de Lisboa (Público, Expresso, RTP, SIC Notícias, TSF, Rádio Renascença). Redáctalo en portugués europeo.
+3. send_regulatory: notificación técnica formal para ERSE (regulador energético PT) y ANPC (Proteção Civil) con datos del incidente${hadConflict ? '\nIMPORTANTE: Hay conflicto de recursos (material limitado). Menciónalo en la notificación regulatoria.' : ''}${criticalAtRisk.length > 0 ? `\nALERTA: ${criticalAtRisk.length} sitio(s) crítico(s) con batería bajo el umbral SLA. Especialmente EPAL Loures (afecta abastecimiento de agua a 800.000 personas). Menciónalo en la notificación a ERSE y ANPC.` : ''}
 Llama a send_sms, send_press_release y send_regulatory (en ese orden), luego complete_comms.
-${params.language === 'pt' ? 'Responde em Português Europeu, excepto en catalán para medios locales si procede.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español/catalán según el canal.'} Sé profesional y preciso.`,
-    userMessage: `SITUACIÓN ACTUAL DEL INCIDENTE — Comarques de Girona
+${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español/portugués según el canal.'} Sé profesional y preciso.`,
+    userMessage: `SITUACIÓN ACTUAL DEL INCIDENTE — Área Metropolitana de Lisboa — Tempestade Beatriz
 
 Fallos totales      : ${state.faults.length}
 Restaurados telecon.: ${restoredFaults.length} (${restoredClients.toLocaleString()} clientes reconectados)

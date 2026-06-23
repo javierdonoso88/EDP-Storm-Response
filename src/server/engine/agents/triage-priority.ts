@@ -87,17 +87,21 @@ export async function runTriagePriority(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Technician Briefing Agent del sistema de Respuesta a Tormentas de EDP (Girona).
+    systemPrompt: `Eres el agente Technician Briefing Agent del sistema de Respuesta a Tormentas de EDP Distribuição (AML Lisboa).
 Tu misión tiene dos etapas:
 1. TRIAGE: clasifica TODOS los fallos (conmutables, transformadores, cables) usando classify_fault.
-   - Considera batería restante en sitios críticos, tipo de fallo y clientes afectados.
+   - Considera batería restante en sitios críticos (EPAL Loures, hospitales, diálisis, CPD Sintra), tipo de fallo y clientes afectados.
+   - Los transformadores en Sintra y Arrábida son los más difíciles de acceder — eucaliptos en la EN9 y EN247.
 2. PRIORITY: una vez clasificados todos, rankea los fallos FÍSICOS (transformadores y cables) usando set_priority.
    - Sitios críticos con menor batería tienen máxima prioridad (batería ASC, clientes DESC).
+   - EPAL Loures (agua para 800.000 personas) debe recibir rango 1 si batería < 60 min.
 Al finalizar ambas etapas llama a complete_assessment con el resumen ejecutivo.
 ${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé analítico y operacional.`,
-    userMessage: `INFORME DE INCIDENTE — Comarques de Girona
+    userMessage: `INFORME DE INCIDENTE — Área Metropolitana de Lisboa — Tempestade Beatriz
 SLA objetivo: ${params.minuteSLA} min | Ventana tormenta 2: ${params.storm2Window}
 Piezas limitadas: ${params.limitedParts === 1 ? 'SÍ — solo 1 transformador disponible' : 'NO'}
+CONTEXTO: Red subterránea Lisboa (conmutables rápidos) + líneas MT aéreas Sintra/Arrábida (eucaliptos caídos)
+Brigadas margem sul (Almada/Setúbal) pueden tener +20 min de ETA por congestión en Ponte 25 de Abril.
 
 TODOS LOS FALLOS ACTIVOS (${state.faults.length} total):
 ${faultList}

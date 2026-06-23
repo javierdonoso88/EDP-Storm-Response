@@ -190,7 +190,7 @@ export async function runOrchestrator(params: SimParams, emit: (e: SimEvent) => 
     },
   ];
 
-  const systemPrompt = `Eres el ASSET AND SERVICES ASSISTANT del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+  const systemPrompt = `Eres el ASSET AND SERVICES ASSISTANT del sistema de Respuesta a Tormentas de EDP Distribuição (Área Metropolitana de Lisboa).
 
 PROTOCOLO OBLIGATORIO — sigue este orden exacto sin saltarte ninguna fase:
 FASE 1 (PARALELA): Llama invoke_triage_priority + invoke_rerouting en el MISMO turno (los dos a la vez).
@@ -206,7 +206,7 @@ ${params.language === 'en'
   ? 'REGRA DE IDIOMA CRÍTICA: DEVES escrever TODA a saída em Português Europeu — cada frase de transição, cada resumo, cada passo de raciocínio. Não uses Espanhol nem Inglês.'
   : 'Responde en español.'}`;
 
-  const userMessage = `${params.language === 'en' ? '[RESPOND IN ENGLISH ONLY]\n\n' : ''}INCIDENTE ACTIVO — Comarques de Girona — T+00:00
+  const userMessage = `${params.language === 'en' ? '[RESPOND IN ENGLISH ONLY]\n\n' : params.language === 'pt' ? '[RESPONDE APENAS EM PORTUGUÊS EUROPEU]\n\n' : ''}INCIDENTE ACTIVO — Área Metropolitana de Lisboa — T+00:00
 
 PARÁMETROS:
   SLA objetivo        : ${params.minuteSLA} minutos

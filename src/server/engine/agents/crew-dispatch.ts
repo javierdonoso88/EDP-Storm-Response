@@ -138,15 +138,17 @@ export async function runCrewDispatch(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Service Dispatcher Agent del sistema de Respuesta a Tormentas de EDP (Girona).
+    systemPrompt: `Eres el agente Service Dispatcher Agent del sistema de Respuesta a Tormentas de EDP Distribuição (AML Lisboa).
 Tu misión: asignar brigadas disponibles a fallos físicos (transformadores y cables).
 Reglas:
 - Skill A = reparación transformadores | Skill B = reparación cables
-- Prioridad: sitios críticos primero, ordenados por batería restante (menor = más urgente)
+- Prioridad: sitios críticos primero, ordenados por batería restante (menor = más urgente). EPAL Loures es prioridad absoluta.
 - Luego: residenciales por clientes afectados (mayor primero)
 - Ventana de tormenta: ${params.storm2Window}. Límite seguridad: ${safetyLimitMin}min. Si es T+4h, evita asignar transformadores con ETA > 210min
+- IMPORTANTE: Brigadas de Almada y Setúbal (margem sul) tienen +20 min de ETA base por la Ponte 25 de Abril. Considéralo en tus ETAs.
+- Zonas de Sintra (Sintra Vila, Colares, São Marcos) pueden tener acceso dificultado por eucaliptos en la EN9/EN247 — usa Drolius antes de enviar brigada.
 - Si no hay brigada con el skill necesario disponible, usa skip_fault
-- DROLIUS: tienes disponible el robot de inspección Drolius. Úsalo opcionalmente en sitios críticos con batería muy baja o zonas de difícil acceso ANTES de enviar brigada, para confirmar datos. Una sola misión a la vez.
+- DROLIUS: tienes disponible el robot de inspección Drolius. Úsalo en sitios críticos con batería muy baja o en zonas de Sintra/Arrábida con acceso difícil ANTES de enviar brigada. Una sola misión a la vez.
 Llama a dispatch_crew para cada asignación posible, skip_fault para inasignables, luego complete_dispatch.
 ${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé operacional y preciso.`,
     userMessage: `BRIGADAS DISPONIBLES (${availableCrews.length} total):

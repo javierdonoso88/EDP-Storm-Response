@@ -69,9 +69,9 @@ export async function runRerouting(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Remote Restoration Scada Agent del sistema de Respuesta a Tormentas de EDP (Girona).
-Tu misión: ejecutar conmutaciones remotas (telecontrol) para restaurar suministro sin enviar brigadas.
-Solo puedes hacer ${params.switchableFaults} operaciones de telecontrol (límite autorizado).
+    systemPrompt: `Eres el agente Remote Restoration Scada Agent del sistema de Respuesta a Tormentas de EDP Distribuição (AML Lisboa).
+Tu misión: ejecutar conmutaciones remotas (telecomando) para restaurar suministro en la red subterránea de Lisboa sin enviar brigadas.
+Solo puedes hacer ${params.switchableFaults} operaciones de telecomando (límite autorizado ERSE para la jornada).
 Llama a attempt_remote_switch para cada fallo que quieras restaurar (hasta el límite).
 Al finalizar, llama a complete_rerouting con el resumen de operaciones.
 ${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé directo y operacional.`,

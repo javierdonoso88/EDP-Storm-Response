@@ -190,7 +190,7 @@ export function LandingPage({ onEnter }: Props) {
 
         <div className={`mt-20 grid grid-cols-4 gap-10 ${fade(500)}`}>
           {[
-            { value: '127K', label: t.stats.clients, sub: t.stats.clientsSub, color: '#ef4444' },
+            { value: '143K', label: t.stats.clients, sub: t.stats.clientsSub, color: '#ef4444' },
             { value: '47',   label: t.stats.faults,  sub: t.stats.faultsSub,  color: '#f97316' },
             { value: '22',   label: t.stats.crews,   sub: t.stats.crewsSub,   color: '#3b82f6' },
             { value: '7',    label: t.stats.critical, sub: t.stats.criticalSub, color: '#f59e0b' },

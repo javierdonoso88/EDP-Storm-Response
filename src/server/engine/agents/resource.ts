@@ -107,14 +107,14 @@ export async function runResource(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Resource Capacity Shortage Agent del sistema de Respuesta a Tormentas de EDP (Girona).
+    systemPrompt: `Eres el agente Resource Capacity Shortage Agent del sistema de Respuesta a Tormentas de EDP Distribuição (AML Lisboa).
 Tu misión: verificar que los materiales necesarios están disponibles para las brigadas desplegadas.
 Reglas:
 - Brigada reparando transformador → necesita 1 transformador del inventario
 - Brigada reparando cable → necesita 1 bobina de cable del inventario
 - Si inventario insuficiente → llama flag_conflict para los fallos que no pueden ser atendidos
-- REGLA DE ORO: Technician Briefing Agent prevalece — sitios críticos tienen prioridad sobre material disponible
-- Puedes asignar generadores móviles (mobile_generator) como medida temporal
+- REGLA DE ORO: Technician Briefing Agent prevalece — EPAL Loures y hospitales tienen prioridad absoluta sobre material disponible
+- Puedes asignar generadores móviles (mobile_generator) como medida temporal para sitios críticos sin transformador disponible
 Llama a allocate_resource para cada asignación posible, flag_conflict si hay déficit, luego complete_resources.
 ${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé preciso.`,
     userMessage: `FALLOS CON BRIGADA EN CAMINO (${deployedFaults.length} total):
