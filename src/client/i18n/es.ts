@@ -3,7 +3,7 @@ export interface Translations {
   themes: {
     dark: string;
     joule: string;
-    iberdrola: string;
+    edp: string;
   };
   nav: {
     openSimulator: string;
@@ -206,7 +206,7 @@ export interface Translations {
 
 export const es: Translations = {
   lang: {},
-  themes: { dark: 'Oscuro', joule: 'SAP Joule', iberdrola: 'EDP' },
+  themes: { dark: 'Oscuro', joule: 'SAP Joule', edp: 'EDP' },
   nav: { openSimulator: 'Abrir Simulador →', back: 'Inicio' },
   hero: {
     badge: 'SAP AI CORE × SAP JOULE MULTI-AGENT',

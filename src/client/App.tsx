@@ -24,6 +24,7 @@ const DEFAULT_PARAMS: SimParams = {
 export default function App() {
   const [params, setParams] = useState<SimParams>(DEFAULT_PARAMS);
   const [initialFaults, setInitialFaults] = useState<Fault[]>([]);
+  const [scenarioTotalClients, setScenarioTotalClients] = useState(143000);
   const [showLanding, setShowLanding] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [showThemePicker, setShowThemePicker] = useState(false);
@@ -61,7 +62,10 @@ export default function App() {
   }, [showLangPicker]);
 
   useEffect(() => {
-    fetch('/api/scenario').then(r => r.json()).then(d => setInitialFaults(d.faults ?? [])).catch(() => {});
+    fetch('/api/scenario').then(r => r.json()).then(d => {
+      setInitialFaults(d.faults ?? []);
+      if (d.totalClients) setScenarioTotalClients(d.totalClients);
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -187,7 +191,7 @@ export default function App() {
             style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer' }}
           >
             <span>{theme === 'dark' ? '🌙' : theme === 'joule' ? '☀' : '⚡'}</span>
-            <span>{theme === 'dark' ? t.themes.dark : theme === 'joule' ? t.themes.joule : t.themes.iberdrola}</span>
+            <span>{theme === 'dark' ? t.themes.dark : theme === 'joule' ? t.themes.joule : t.themes.edp}</span>
             <svg width="8" height="5" viewBox="0 0 8 5" fill="currentColor"><path d="M0 0l4 5 4-5z"/></svg>
           </button>
           {showThemePicker && (
@@ -198,7 +202,7 @@ export default function App() {
               {([
                 { value: 'dark', icon: '🌙', label: t.themes.dark },
                 { value: 'joule', icon: '☀', label: t.themes.joule },
-                { value: 'iberdrola', icon: '⚡', label: t.themes.iberdrola },
+                { value: 'iberdrola', icon: '⚡', label: t.themes.edp },
               ] as { value: Theme; icon: string; label: string }[]).map(opt => (
                 <button
                   key={opt.value}
@@ -309,6 +313,7 @@ export default function App() {
       {showResults && (
         <ResultsOverlay
           faults={state.faults}
+          totalClients={scenarioTotalClients}
           kpi={state.kpi}
           agentLogs={state.agentLogs}
           commsMessages={state.commsMessages}

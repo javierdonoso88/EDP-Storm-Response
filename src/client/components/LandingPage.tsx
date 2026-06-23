@@ -150,7 +150,7 @@ export function LandingPage({ onEnter }: Props) {
             style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer' }}
           >
             <span>{theme === 'dark' ? '🌙' : theme === 'joule' ? '☀' : '⚡'}</span>
-            <span>{theme === 'dark' ? t.themes.dark : theme === 'joule' ? t.themes.joule : t.themes.iberdrola}</span>
+            <span>{theme === 'dark' ? t.themes.dark : theme === 'joule' ? t.themes.joule : t.themes.edp}</span>
             <svg width="8" height="5" viewBox="0 0 8 5" fill="currentColor"><path d="M0 0l4 5 4-5z"/></svg>
           </button>
           {showThemePicker && (
@@ -161,7 +161,7 @@ export function LandingPage({ onEnter }: Props) {
               {([
                 { value: 'dark', icon: '🌙', label: t.themes.dark },
                 { value: 'joule', icon: '☀', label: t.themes.joule },
-                { value: 'iberdrola', icon: '⚡', label: t.themes.iberdrola },
+                { value: 'iberdrola', icon: '⚡', label: t.themes.edp },
               ] as { value: Theme; icon: string; label: string }[]).map(opt => (
                 <button
                   key={opt.value}

@@ -5,6 +5,7 @@ import { useT } from '../i18n';
 
 interface Props {
   faults: Fault[];
+  totalClients: number;
   kpi: KPIState;
   agentLogs: AgentLog[];
   commsMessages: CommsMessage[];
@@ -213,7 +214,7 @@ function SapKpiCard({ system, value, label, color }: { system: string; value: st
   );
 }
 
-export function ResultsOverlay({ faults, kpi, agentLogs, commsMessages, actionMessages, conflicts, elapsedLabel, onClose }: Props) {
+export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMessages, actionMessages, conflicts, elapsedLabel, onClose }: Props) {
   const [vis, setVis] = useState(false);
   const { theme } = useTheme();
   const t = useT();
@@ -238,7 +239,6 @@ export function ResultsOverlay({ faults, kpi, agentLogs, commsMessages, actionMe
         return b.affectedClients - a.affectedClients;
       });
 
-    const totalClients = faults.reduce((s, f) => s + f.affectedClients, 0);
     const restored = faults.filter(f => f.status === 'restored');
     const enRoute = faults.filter(f => f.status === 'crew-en-route');
     const attended = restored.length + enRoute.length;
@@ -304,7 +304,7 @@ export function ResultsOverlay({ faults, kpi, agentLogs, commsMessages, actionMe
 </head>
 <body>
   <h1>${t.results.pdfTitle}</h1>
-  <div class="subtitle">Storm Response Commander · Iberdrola Girona · ${t.results.completed} · ${elapsedLabel}</div>
+  <div class="subtitle">Storm Response Commander · EDP Distribuição Lisboa · ${t.results.completed} · ${elapsedLabel}</div>
 
   <div class="section-label">${t.results.pdfKpis}</div>
   <div class="kpi-row">
@@ -394,7 +394,7 @@ export function ResultsOverlay({ faults, kpi, agentLogs, commsMessages, actionMe
   ` : ''}
 
   <div class="footer">
-    <span>Storm Response Commander · Iberdrola Girona</span>
+    <span>Storm Response Commander · EDP Distribuição Lisboa</span>
     <span>${t.results.pdfGenerated} ${new Date().toLocaleString(t.lang.toggle === 'ES' ? 'en-GB' : 'es-ES')}</span>
   </div>
 </body>
@@ -412,7 +412,6 @@ export function ResultsOverlay({ faults, kpi, agentLogs, commsMessages, actionMe
   const orchRaw = orchLog?.text ?? '';
 
   // Operational KPIs
-  const totalClients = faults.reduce((s, f) => s + f.affectedClients, 0);
   const restored = faults.filter(f => f.status === 'restored');
   const enRoute = faults.filter(f => f.status === 'crew-en-route');
   const pending = faults.filter(f => f.status === 'fault');
