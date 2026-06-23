@@ -304,7 +304,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
 </head>
 <body>
   <h1>${t.results.pdfTitle}</h1>
-  <div class="subtitle">Storm Response Commander · EDP Distribuição Lisboa · ${t.results.completed} · ${elapsedLabel}</div>
+  <div class="subtitle">Storm Response Commander · EDP · Área Metropolitana de Lisboa · ${t.results.completed} · ${elapsedLabel}</div>
 
   <div class="section-label">${t.results.pdfKpis}</div>
   <div class="kpi-row">
@@ -394,7 +394,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
   ` : ''}
 
   <div class="footer">
-    <span>Storm Response Commander · EDP Distribuição Lisboa</span>
+    <span>Storm Response Commander · EDP · Área Metropolitana de Lisboa</span>
     <span>${t.results.pdfGenerated} ${new Date().toLocaleString(t.lang.toggle === 'ES' ? 'en-GB' : 'es-ES')}</span>
   </div>
 </body>
