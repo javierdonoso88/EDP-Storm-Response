@@ -1,0 +1,332 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme tokens ──────────────────────────────────────────────── */
+
+:root {
+  --bg-base:        #0d1520;
+  --bg-card:        #111827;
+  --bg-secondary:   #1a2540;
+  --bg-tertiary:    #111c2e;
+  --bg-header:      #0a0f1a;
+  --bg-overlay:     rgba(4,8,16,0.88);
+  --bg-panel:       #0a1525;
+  --border:         #1e2d45;
+  --border-accent:  #2d3f5e;
+  --text-primary:   #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --text-dim:       #475569;
+  --text-ghost:     #334155;
+  --accent:         #22d3ee;
+  --accent-subtle:  rgba(34,211,238,0.08);
+  --scrollbar-track: #0d1520;
+  --scrollbar-thumb: #334155;
+  --scrollbar-thumb-hover: #475569;
+  --status-running-bg:    #451a03;
+  --status-running-color: #f97316;
+  --status-done-bg:       #052e16;
+  --status-done-color:    #22c55e;
+}
+
+[data-theme="joule"] {
+  --bg-base:        #f3f5f8;
+  --bg-card:        #ffffff;
+  --bg-secondary:   #f7f9fc;
+  --bg-tertiary:    #eef2f7;
+  --bg-header:      #ffffff;
+  --bg-overlay:     rgba(15,23,42,0.6);
+  --bg-panel:       #ffffff;
+  --border:         #dde3ec;
+  --border-accent:  #c4cdd9;
+  --text-primary:   #1a2535;
+  --text-secondary: #4b5e72;
+  --text-muted:     #7a8fa6;
+  --text-dim:       #8a9daf;
+  --text-ghost:     #aabbc8;
+  --accent:         #6d28d9;
+  --accent-subtle:  rgba(109,40,217,0.07);
+  --scrollbar-track: #f3f5f8;
+  --scrollbar-thumb: #c4cdd9;
+  --scrollbar-thumb-hover: #a8b8c8;
+  --status-running-bg:    #fff4ed;
+  --status-running-color: #c2410c;
+  --status-done-bg:       #f0fdf4;
+  --status-done-color:    #15803d;
+  --card-shadow:    0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03);
+  --card-shadow-lg: 0 4px 20px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+[data-theme="iberdrola"] {
+  --bg-base:        #f2f7f4;
+  --bg-card:        #ffffff;
+  --bg-secondary:   #edf5f0;
+  --bg-tertiary:    #e4f0e8;
+  --bg-header:      #ffffff;
+  --bg-overlay:     rgba(0,40,15,0.55);
+  --bg-panel:       #ffffff;
+  --border:         #c8ddd0;
+  --border-accent:  #aecebe;
+  --text-primary:   #0f2318;
+  --text-secondary: #2d5240;
+  --text-muted:     #5a8268;
+  --text-dim:       #7a9e88;
+  --text-ghost:     #a0bda8;
+  --accent:         #00a651;
+  --accent-subtle:  rgba(0,166,81,0.08);
+  --scrollbar-track: #f2f7f4;
+  --scrollbar-thumb: #aecebe;
+  --scrollbar-thumb-hover: #8ab89a;
+  --status-running-bg:    #fff8e6;
+  --status-running-color: #c2410c;
+  --status-done-bg:       #e8f5ee;
+  --status-done-color:    #15803d;
+  --card-shadow:    0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03);
+  --card-shadow-lg: 0 4px 20px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* ── Base layer ────────────────────────────────────────────────── */
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Sans', Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  #root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+}
+
+/* ── Component layer ───────────────────────────────────────────── */
+
+@layer components {
+  .panel-card {
+    @apply rounded border;
+    background: var(--bg-card);
+    border-color: var(--border);
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.4);
+  }
+
+  .panel-header {
+    @apply px-3 py-2 border-b flex items-center gap-2;
+    background: var(--bg-base);
+    border-color: var(--border);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 py-2 px-4 rounded text-sm font-semibold text-white transition-colors duration-150;
+    background: #2563eb;
+  }
+  .btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+  .btn-primary:active:not(:disabled) { background: #1e40af; }
+  .btn-primary:disabled { background: var(--border); cursor: not-allowed; }
+
+  .sap-tag {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold;
+  }
+
+  .sap-status-dot {
+    @apply w-2 h-2 rounded-full inline-block flex-shrink-0;
+  }
+
+  .kpi-card {
+    @apply rounded border p-3 flex flex-col gap-1;
+    background: var(--bg-base);
+    border-color: var(--border);
+  }
+}
+
+/* ── Joule theme overrides ─────────────────────────────────────── */
+
+/* Cards: clean white with subtle elevation instead of dark glow shadow */
+[data-theme="joule"] .panel-card {
+  box-shadow: var(--card-shadow);
+  border-color: var(--border);
+}
+
+/* Panel header: white bg, stronger text, accent left border */
+[data-theme="joule"] .panel-header {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-weight: 700;
+  border-left: 3px solid var(--accent);
+  border-radius: 0;
+}
+
+/* KPI cards: white with elevation */
+[data-theme="joule"] .kpi-card {
+  background: var(--bg-card);
+  box-shadow: var(--card-shadow);
+  border-color: var(--border);
+}
+
+/* Primary button: Joule purple */
+[data-theme="joule"] .btn-primary            { background: var(--accent); }
+[data-theme="joule"] .btn-primary:hover:not(:disabled) { background: #5b21b6; }
+[data-theme="joule"] .btn-primary:active:not(:disabled){ background: #4c1d95; }
+[data-theme="joule"] .btn-primary:disabled   { background: var(--border-accent); color: var(--text-muted); }
+
+/* Tailwind color fixes: neon shades → accessible dark variants on white */
+[data-theme="joule"] .text-amber-400  { color: #b45309 !important; }
+[data-theme="joule"] .text-yellow-400 { color: #a16207 !important; }
+[data-theme="joule"] .text-green-400  { color: #15803d !important; }
+[data-theme="joule"] .text-emerald-400{ color: #047857 !important; }
+[data-theme="joule"] .text-cyan-400   { color: #0e7490 !important; }
+[data-theme="joule"] .text-blue-400   { color: #1d4ed8 !important; }
+[data-theme="joule"] .text-purple-400 { color: #6d28d9 !important; }
+[data-theme="joule"] .text-pink-400   { color: #be185d !important; }
+[data-theme="joule"] .text-red-400    { color: #dc2626 !important; }
+[data-theme="joule"] .text-orange-400 { color: #c2410c !important; }
+
+/* Dark-bg Tailwind blobs → light pastels in Joule */
+[data-theme="joule"] .bg-emerald-900\/40 { background: rgba(209,250,229,0.9) !important; }
+[data-theme="joule"] .bg-cyan-900\/40    { background: rgba(207,250,254,0.9) !important; }
+[data-theme="joule"] .bg-red-900\/20     { background: rgba(254,226,226,0.8) !important; }
+
+/* Arbitrary-value Tailwind bg/border → CSS vars */
+[data-theme="joule"] .bg-\[#111c2e\]      { background: var(--bg-tertiary) !important; }
+[data-theme="joule"] .bg-\[#1a2540\]      { background: var(--bg-secondary) !important; }
+[data-theme="joule"] .border-\[#1e2d45\]  { border-color: var(--border) !important; }
+
+/* Slate utility overrides */
+[data-theme="joule"] .text-slate-400 { color: var(--text-secondary) !important; }
+[data-theme="joule"] .text-slate-500 { color: var(--text-muted) !important; }
+[data-theme="joule"] .text-slate-600 { color: var(--text-dim) !important; }
+[data-theme="joule"] .text-slate-700 { color: var(--text-secondary) !important; }
+
+/* ── Iberdrola theme overrides ─────────────────────────────────── */
+
+[data-theme="iberdrola"] .panel-card {
+  box-shadow: var(--card-shadow);
+  border-color: var(--border);
+}
+
+[data-theme="iberdrola"] .panel-header {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-weight: 700;
+  border-left: 3px solid var(--accent);
+  border-radius: 0;
+}
+
+[data-theme="iberdrola"] .kpi-card {
+  background: var(--bg-card);
+  box-shadow: var(--card-shadow);
+  border-color: var(--border);
+}
+
+[data-theme="iberdrola"] .btn-primary            { background: var(--accent); }
+[data-theme="iberdrola"] .btn-primary:hover:not(:disabled) { background: #008a43; }
+[data-theme="iberdrola"] .btn-primary:active:not(:disabled){ background: #006b33; }
+[data-theme="iberdrola"] .btn-primary:disabled   { background: var(--border-accent); color: var(--text-muted); }
+
+[data-theme="iberdrola"] .text-amber-400  { color: #b45309 !important; }
+[data-theme="iberdrola"] .text-yellow-400 { color: #a16207 !important; }
+[data-theme="iberdrola"] .text-green-400  { color: #15803d !important; }
+[data-theme="iberdrola"] .text-emerald-400{ color: #047857 !important; }
+[data-theme="iberdrola"] .text-cyan-400   { color: #0e7490 !important; }
+[data-theme="iberdrola"] .text-blue-400   { color: #1d4ed8 !important; }
+[data-theme="iberdrola"] .text-purple-400 { color: #6d28d9 !important; }
+[data-theme="iberdrola"] .text-pink-400   { color: #be185d !important; }
+[data-theme="iberdrola"] .text-red-400    { color: #dc2626 !important; }
+[data-theme="iberdrola"] .text-orange-400 { color: #c2410c !important; }
+
+[data-theme="iberdrola"] .bg-emerald-900\/40 { background: rgba(209,250,229,0.9) !important; }
+[data-theme="iberdrola"] .bg-cyan-900\/40    { background: rgba(207,250,254,0.9) !important; }
+[data-theme="iberdrola"] .bg-red-900\/20     { background: rgba(254,226,226,0.8) !important; }
+
+[data-theme="iberdrola"] .bg-\[#111c2e\]      { background: var(--bg-tertiary) !important; }
+[data-theme="iberdrola"] .bg-\[#1a2540\]      { background: var(--bg-secondary) !important; }
+[data-theme="iberdrola"] .border-\[#1e2d45\]  { border-color: var(--border) !important; }
+
+[data-theme="iberdrola"] .text-slate-400 { color: var(--text-secondary) !important; }
+[data-theme="iberdrola"] .text-slate-500 { color: var(--text-muted) !important; }
+[data-theme="iberdrola"] .text-slate-600 { color: var(--text-dim) !important; }
+[data-theme="iberdrola"] .text-slate-700 { color: var(--text-secondary) !important; }
+
+/* ── Utilities ─────────────────────────────────────────────────── */
+
+@layer utilities {
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes ping {
+    75%, 100% { transform: scale(1.6); opacity: 0; }
+  }
+}
+
+/* ── Leaflet / Map overrides ───────────────────────────────────── */
+
+.map-tooltip {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-accent) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18) !important;
+  padding: 8px 10px !important;
+  color: var(--text-primary) !important;
+  font-family: 'IBM Plex Sans', Arial, sans-serif !important;
+  font-size: 13px !important;
+}
+
+[data-theme="joule"] .map-tooltip {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06) !important;
+  border-color: var(--border) !important;
+}
+
+.leaflet-tooltip-top.map-tooltip::before {
+  border-top-color: var(--border-accent) !important;
+}
+
+@keyframes pulse-ring {
+  0%   { stroke-opacity: 0.7; stroke-width: 2; }
+  70%  { stroke-opacity: 0;   stroke-width: 12; }
+  100% { stroke-opacity: 0;   stroke-width: 12; }
+}
+.node-pulse-ring { animation: pulse-ring 1.6s ease-out infinite; }
+
+@keyframes border-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+.n8n-node-running { animation: border-pulse 1.2s ease-in-out infinite; }
+
+.leaflet-control-zoom a {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-accent) !important;
+  font-size: 16px !important;
+}
+.leaflet-control-zoom a:hover {
+  background: var(--bg-card) !important;
+  color: var(--accent) !important;
+}
+.leaflet-control-attribution { display: none !important; }

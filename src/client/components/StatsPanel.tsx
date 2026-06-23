@@ -1,0 +1,145 @@
+import { ActionMessage, CommsMessage } from '../types';
+import { useTheme } from '../contexts/ThemeContext';
+import { useT } from '../i18n';
+
+interface Props {
+  messages: CommsMessage[];
+  actionMessages: ActionMessage[];
+}
+
+const CHANNEL_ICON: Record<string, string> = {
+  sms: '📱',
+  press: '📰',
+  regulatory: '📋',
+};
+
+const CHANNEL_COLOR: Record<string, string> = {
+  sms: 'text-blue-400',
+  press: 'text-purple-400',
+  regulatory: 'text-amber-400',
+};
+
+const AGENT_LABEL: Record<string, string> = {
+  orchestrator: 'ASSET AND SERVICES ASSISTANT',
+  'triage-priority': 'TECHNICIAN BRIEFING AGENT',
+  rerouting: 'REMOTE RESTORATION SCADA AGENT',
+  'crew-dispatch': 'SERVICE DISPATCHER AGENT',
+  resource: 'RESOURCE CAPACITY SHORTAGE AGENT',
+  comms: 'COMMUNICATIONS INSIGHT AGENT',
+};
+
+const AGENT_COLOR: Record<string, string> = {
+  orchestrator: 'text-amber-400',
+  'triage-priority': 'text-purple-400',
+  rerouting: 'text-green-400',
+  'crew-dispatch': 'text-blue-400',
+  resource: 'text-yellow-400',
+  comms: 'text-pink-400',
+};
+
+const AGENT_DOT: Record<string, string> = {
+  orchestrator: 'bg-amber-400',
+  'triage-priority': 'bg-purple-400',
+  rerouting: 'bg-green-400',
+  'crew-dispatch': 'bg-blue-400',
+  resource: 'bg-yellow-400',
+  comms: 'bg-pink-400',
+};
+
+function timeAgo(ts: number): string {
+  const secs = Math.floor((Date.now() - ts) / 1000);
+  if (secs < 60) return `${secs}s`;
+  return `${Math.floor(secs / 60)}m`;
+}
+
+export function StatsPanel({ messages, actionMessages }: Props) {
+  const { theme } = useTheme();
+  const t = useT();
+  const isLight = theme !== 'dark';
+
+  const CHANNEL_LABEL: Record<string, string> = {
+    sms: t.panels.sms,
+    press: t.panels.press,
+    regulatory: t.panels.regulatory,
+  };
+
+  const actionsBadgeStyle = isLight
+    ? { background: 'rgba(209,250,229,0.9)', color: '#047857' }
+    : { background: 'rgba(6,78,59,0.4)', color: '#34d399' };
+  const commsBadgeStyle = isLight
+    ? { background: 'rgba(207,250,254,0.9)', color: '#0e7490' }
+    : { background: 'rgba(22,78,99,0.4)', color: '#22d3ee' };
+  return (
+    <div className="panel-card flex flex-col h-full overflow-hidden">
+
+      {/* ── Actions ── */}
+      <div className="panel-header">
+        <span className="text-emerald-400">⚙</span>
+        {t.panels.sapHeader}
+        {actionMessages.length > 0 && (
+          <span className="ml-auto text-[12px] px-1.5 py-0.5 rounded font-semibold" style={actionsBadgeStyle}>
+            {actionMessages.length}
+          </span>
+        )}
+      </div>
+      <div className="overflow-y-auto p-2 flex flex-col gap-1.5" style={{ flex: '1 1 0', minHeight: 0 }}>
+        {actionMessages.length === 0 && (
+          <div className="text-xs text-slate-600 italic text-center mt-4">
+            {t.panels.sapPlaceholder}
+          </div>
+        )}
+        {actionMessages.map((a, i) => (
+          <div key={i} className="rounded px-2 py-1.5 flex flex-col gap-0.5" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border)' }}>
+            <div className="flex items-center gap-1.5">
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${AGENT_DOT[a.agent] ?? 'bg-slate-500'}`} />
+              <span className={`text-[11px] font-bold font-mono ${AGENT_COLOR[a.agent] ?? 'text-slate-400'}`}>
+                {AGENT_LABEL[a.agent] ?? a.agent.toUpperCase()}
+              </span>
+              <span className="text-[11px] truncate ml-1" style={{ color: 'var(--text-muted)' }}>{a.system}</span>
+              <span className="ml-auto text-[11px] flex-shrink-0" style={{ color: 'var(--text-ghost)' }}>{timeAgo(a.ts)}</span>
+            </div>
+            <p className="text-[11px] leading-snug line-clamp-2 pl-3" style={{ color: 'var(--text-secondary)' }} title={a.msg}>
+              {a.msg}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Divider ── */}
+      <div className="border-t" style={{ borderColor: 'var(--border)' }} />
+
+      {/* ── Comunicaciones ── */}
+      <div className="panel-header">
+        <span className="text-cyan-400">◎</span>
+        {t.panels.commsHeader}
+        {messages.length > 0 && (
+          <span className="ml-auto text-[12px] px-1.5 py-0.5 rounded font-semibold" style={commsBadgeStyle}>
+            {messages.length} enviados
+          </span>
+        )}
+      </div>
+      <div className="overflow-y-auto p-2 flex flex-col gap-2" style={{ flex: '1 1 0', minHeight: 0 }}>
+        {messages.length === 0 && (
+          <div className="text-xs text-slate-600 italic text-center mt-4">
+            {t.panels.commsPlaceholder}
+          </div>
+        )}
+        {messages.map((msg, i) => (
+          <div key={i} className="rounded p-2 flex flex-col gap-1" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">{CHANNEL_ICON[msg.channel]}</span>
+              <span className={`text-[12px] font-bold font-mono ${CHANNEL_COLOR[msg.channel]}`}>
+                {CHANNEL_LABEL[msg.channel]}
+              </span>
+              <span className="ml-auto text-[12px]" style={{ color: 'var(--text-ghost)' }}>{timeAgo(msg.ts)}</span>
+            </div>
+            <p className="text-[12px] leading-snug line-clamp-3" style={{ color: 'var(--text-secondary)' }} title={msg.msg}>
+              {msg.msg}
+            </p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  );
+}
