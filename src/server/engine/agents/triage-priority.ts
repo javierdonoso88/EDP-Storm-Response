@@ -78,6 +78,8 @@ export async function runTriagePriority(
         summary = input.summary as string;
         emit({ type: 'action', agent: 'triage-priority', system: 'SAP S/4HANA Asset Management + Event Mesh', msg: params.language === 'en'
           ? `${state.faults.length} assets analysed — ${criticalFaultIds.length} critical sites, ${orderedIds.length} physical faults ranked`
+          : params.language === 'pt'
+          ? `${state.faults.length} ativos analisados — ${criticalFaultIds.length} locais críticos, ${orderedIds.length} falhas físicas ordenadas`
           : `${state.faults.length} activos analizados — ${criticalFaultIds.length} sitios críticos, ${orderedIds.length} fallos físicos rankeados` });
         return 'Análisis completado.';
       },
@@ -85,14 +87,14 @@ export async function runTriagePriority(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Technician Briefing Agent del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+    systemPrompt: `Eres el agente Technician Briefing Agent del sistema de Respuesta a Tormentas de EDP (Girona).
 Tu misión tiene dos etapas:
 1. TRIAGE: clasifica TODOS los fallos (conmutables, transformadores, cables) usando classify_fault.
    - Considera batería restante en sitios críticos, tipo de fallo y clientes afectados.
 2. PRIORITY: una vez clasificados todos, rankea los fallos FÍSICOS (transformadores y cables) usando set_priority.
    - Sitios críticos con menor batería tienen máxima prioridad (batería ASC, clientes DESC).
 Al finalizar ambas etapas llama a complete_assessment con el resumen ejecutivo.
-Responde en español. Sé analítico y operacional.`,
+${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé analítico y operacional.`,
     userMessage: `INFORME DE INCIDENTE — Comarques de Girona
 SLA objetivo: ${params.minuteSLA} min | Ventana tormenta 2: ${params.storm2Window}
 Piezas limitadas: ${params.limitedParts === 1 ? 'SÍ — solo 1 transformador disponible' : 'NO'}

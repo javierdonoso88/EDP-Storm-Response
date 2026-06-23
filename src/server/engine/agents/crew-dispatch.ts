@@ -56,6 +56,8 @@ export async function runCrewDispatch(
         emit({ type: 'asset_update', id: fault.id, status: 'crew-en-route' });
         emit({ type: 'action', agent: 'crew-dispatch', system: 'SAP Field Service Management', msg: params.language === 'en'
           ? `Work order created: ${crew.id} → ${fault.id} (${fault.zone}) — ETA ${input.eta} min`
+          : params.language === 'pt'
+          ? `Ordem de trabalho criada: ${crew.id} → ${fault.id} (${fault.zone}) — ETA ${input.eta} min`
           : `Orden de trabajo creada: ${crew.id} → ${fault.id} (${fault.zone}) — ETA ${input.eta} min` });
         return `OK: ${crew.id} despachado a ${fault.id} — ETA ${input.eta}min. ${fault.affectedClients.toLocaleString()} clientes afectados.`;
       },
@@ -88,12 +90,16 @@ export async function runCrewDispatch(
         emit({ type: 'drolius_update', status: 'deployed', task: input.faultId as string });
         emit({ type: 'action', agent: 'crew-dispatch', system: 'Drolius · ANYbotics', msg: params.language === 'en'
           ? `Drolius deployed → ${fault.zone} (${input.faultId}) — mission: ${input.mission}`
+          : params.language === 'pt'
+          ? `Drolius implantado → ${fault.zone} (${input.faultId}) — missão: ${input.mission}`
           : `Drolius asignado en campo → ${fault.zone} (${input.faultId}) — misión: ${input.mission}` });
 
         const report = buildDroliusReport(fault, input.mission as string);
 
         emit({ type: 'action', agent: 'crew-dispatch', system: 'Drolius · ANYbotics', msg: params.language === 'en'
           ? `Drolius transmits report: ${report.slice(0, 100)}…`
+          : params.language === 'pt'
+          ? `Drolius transmite relatório: ${report.slice(0, 100)}…`
           : `Drolius transmite informe: ${report.slice(0, 100)}…` });
 
         return report;
@@ -132,7 +138,7 @@ export async function runCrewDispatch(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Service Dispatcher Agent del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+    systemPrompt: `Eres el agente Service Dispatcher Agent del sistema de Respuesta a Tormentas de EDP (Girona).
 Tu misión: asignar brigadas disponibles a fallos físicos (transformadores y cables).
 Reglas:
 - Skill A = reparación transformadores | Skill B = reparación cables
@@ -142,7 +148,7 @@ Reglas:
 - Si no hay brigada con el skill necesario disponible, usa skip_fault
 - DROLIUS: tienes disponible el robot de inspección Drolius. Úsalo opcionalmente en sitios críticos con batería muy baja o zonas de difícil acceso ANTES de enviar brigada, para confirmar datos. Una sola misión a la vez.
 Llama a dispatch_crew para cada asignación posible, skip_fault para inasignables, luego complete_dispatch.
-Responde en español. Sé operacional y preciso.`,
+${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé operacional y preciso.`,
     userMessage: `BRIGADAS DISPONIBLES (${availableCrews.length} total):
 ${crewList || 'Ninguna brigada disponible'}
 

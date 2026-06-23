@@ -52,9 +52,12 @@ export async function runResource(
         else if (rt === 'mobile_generator') state.inventory.mobileGenerators--;
         const RESOURCE_LABEL_ES: Record<string, string> = { transformer: 'transformador', cable: 'cable', mobile_generator: 'generador móvil' };
         const RESOURCE_LABEL_EN: Record<string, string> = { transformer: 'transformer', cable: 'cable', mobile_generator: 'mobile generator' };
-        const rl = params.language === 'en' ? (RESOURCE_LABEL_EN[rt] ?? rt) : (RESOURCE_LABEL_ES[rt] ?? rt);
+        const RESOURCE_LABEL_PT: Record<string, string> = { transformer: 'transformador', cable: 'cabo', mobile_generator: 'gerador móvel' };
+        const rl = params.language === 'en' ? (RESOURCE_LABEL_EN[rt] ?? rt) : params.language === 'pt' ? (RESOURCE_LABEL_PT[rt] ?? rt) : (RESOURCE_LABEL_ES[rt] ?? rt);
         emit({ type: 'action', agent: 'resource', system: 'SAP Integrated Business Planning', msg: params.language === 'en'
           ? `Material reserved in IBP: 1 ${rl} → ${input.faultId}`
+          : params.language === 'pt'
+          ? `Material reservado em IBP: 1 ${rl} → ${input.faultId}`
           : `Material reservado en IBP: 1 ${rl} → ${input.faultId}` });
         return `OK: ${rt} asignado a ${input.faultId}`;
       },
@@ -80,6 +83,8 @@ export async function runResource(
         });
         emit({ type: 'action', agent: 'resource', system: 'SAP Integrated Business Planning', msg: params.language === 'en'
           ? `Material replenishment request registered in IBP: ${input.reason}`
+          : params.language === 'pt'
+          ? `Pedido de reposição de material registado em IBP: ${input.reason}`
           : `Solicitud de reposición de material registrada en IBP: ${input.reason}` });
         return `Conflicto registrado: ${input.faultId} — ${input.reason}`;
       },
@@ -102,7 +107,7 @@ export async function runResource(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Resource Capacity Shortage Agent del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+    systemPrompt: `Eres el agente Resource Capacity Shortage Agent del sistema de Respuesta a Tormentas de EDP (Girona).
 Tu misión: verificar que los materiales necesarios están disponibles para las brigadas desplegadas.
 Reglas:
 - Brigada reparando transformador → necesita 1 transformador del inventario
@@ -111,7 +116,7 @@ Reglas:
 - REGLA DE ORO: Technician Briefing Agent prevalece — sitios críticos tienen prioridad sobre material disponible
 - Puedes asignar generadores móviles (mobile_generator) como medida temporal
 Llama a allocate_resource para cada asignación posible, flag_conflict si hay déficit, luego complete_resources.
-Responde en español. Sé preciso.`,
+${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé preciso.`,
     userMessage: `FALLOS CON BRIGADA EN CAMINO (${deployedFaults.length} total):
 ${faultInfo || 'Ningún fallo con brigada asignada'}
 

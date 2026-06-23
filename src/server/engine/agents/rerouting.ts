@@ -45,6 +45,8 @@ export async function runRerouting(
         restoredFaultIds.push(fault.id);
         emit({ type: 'action', agent: 'rerouting', system: 'SAP Asset Intelligence Network', msg: params.language === 'en'
           ? `Remote switch executed: ${fault.id} — ${fault.zone} (${fault.affectedClients.toLocaleString()} customers reconnected)`
+          : params.language === 'pt'
+          ? `Comutação remota executada: ${fault.id} — ${fault.zone} (${fault.affectedClients.toLocaleString()} clientes reconectados)`
           : `Conmutación remota ejecutada: ${fault.id} — ${fault.zone} (${fault.affectedClients.toLocaleString()} clientes reconectados)` });
         return `Conmutación exitosa: ${fault.id} (${fault.zone}) restaurado — ${fault.affectedClients.toLocaleString()} clientes reconectados`;
       },
@@ -67,12 +69,12 @@ export async function runRerouting(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Remote Restoration Scada Agent del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+    systemPrompt: `Eres el agente Remote Restoration Scada Agent del sistema de Respuesta a Tormentas de EDP (Girona).
 Tu misión: ejecutar conmutaciones remotas (telecontrol) para restaurar suministro sin enviar brigadas.
 Solo puedes hacer ${params.switchableFaults} operaciones de telecontrol (límite autorizado).
 Llama a attempt_remote_switch para cada fallo que quieras restaurar (hasta el límite).
 Al finalizar, llama a complete_rerouting con el resumen de operaciones.
-Responde en español. Sé directo y operacional.`,
+${params.language === 'pt' ? 'Responde em Português Europeu.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español.'} Sé directo y operacional.`,
     userMessage: `FALLOS CONMUTABLES DISPONIBLES (${switchable.length} total):
 ${faultList}
 

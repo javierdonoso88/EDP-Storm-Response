@@ -35,6 +35,8 @@ export async function runComms(
         emit({ type: 'comms', channel: 'sms', msg });
         emit({ type: 'action', agent: 'comms', system: 'SAP Customer Experience', msg: params.language === 'en'
           ? `Mass SMS sent via SAP CX — ${msg.slice(0, 60)}${msg.length > 60 ? '…' : ''}`
+          : params.language === 'pt'
+          ? `SMS em massa enviado via SAP CX — ${msg.slice(0, 60)}${msg.length > 60 ? '…' : ''}`
           : `SMS masivo enviado vía SAP CX — ${msg.slice(0, 60)}${msg.length > 60 ? '…' : ''}` });
         return 'SMS enviado.';
       },
@@ -55,6 +57,8 @@ export async function runComms(
         emit({ type: 'comms', channel: 'press', msg });
         emit({ type: 'action', agent: 'comms', system: 'SAP Customer Experience', msg: params.language === 'en'
           ? `Press release published via SAP CX → local Girona media (El Punt Avui, Diari de Girona)`
+          : params.language === 'pt'
+          ? `Comunicado de imprensa publicado via SAP CX → media local de Girona (El Punt Avui, Diari de Girona)`
           : `Nota de prensa publicada vía SAP CX → medios locales Girona (El Punt Avui, Diari de Girona)` });
         return 'Nota de prensa enviada.';
       },
@@ -75,6 +79,8 @@ export async function runComms(
         emit({ type: 'comms', channel: 'regulatory', msg });
         emit({ type: 'action', agent: 'comms', system: 'SAP Customer Experience', msg: params.language === 'en'
           ? `Regulatory notification sent via SAP CX → CTEPC/CNMC`
+          : params.language === 'pt'
+          ? `Notificação regulatória enviada via SAP CX → ERSE/CNMC`
           : `Notificación regulatoria enviada vía SAP CX → CTEPC/CNMC` });
         return 'Notificación regulatoria enviada.';
       },
@@ -97,13 +103,13 @@ export async function runComms(
   ];
 
   await runAgent({
-    systemPrompt: `Eres el agente Communications Insight Agent del sistema de Respuesta a Tormentas de Iberdrola (Girona).
+    systemPrompt: `Eres el agente Communications Insight Agent del sistema de Respuesta a Tormentas de EDP (Girona).
 Tu misión: redactar y enviar 3 comunicaciones obligatorias en este orden:
-1. send_sms: conciso (≤160 chars), menciona Iberdrola, número de clientes y tiempo estimado de restauración
+1. send_sms: conciso (≤160 chars), menciona EDP, número de clientes y tiempo estimado de restauración
 2. send_press_release: nota formal para medios locales (El Punt Avui, Diari de Girona, RAC1, Catalunya Ràdio). Puedes escribirla en catalán.
-3. send_regulatory: notificación técnica formal para CTEPC/CNMC con datos del incidente${hadConflict ? '\nIMPORTANTE: Hay conflicto de recursos (material limitado). Menciónalo en la notificación regulatoria.' : ''}${criticalAtRisk.length > 0 ? `\nALERTA: ${criticalAtRisk.length} sitio(s) crítico(s) con batería bajo el umbral SLA. Menciónalo en la notificación regulatoria.` : ''}
+3. send_regulatory: notificación técnica formal para ERSE/CNMC con datos del incidente${hadConflict ? '\nIMPORTANTE: Hay conflicto de recursos (material limitado). Menciónalo en la notificación regulatoria.' : ''}${criticalAtRisk.length > 0 ? `\nALERTA: ${criticalAtRisk.length} sitio(s) crítico(s) con batería bajo el umbral SLA. Menciónalo en la notificación regulatoria.` : ''}
 Llama a send_sms, send_press_release y send_regulatory (en ese orden), luego complete_comms.
-Responde en español/catalán según el canal. Sé profesional y preciso.`,
+${params.language === 'pt' ? 'Responde em Português Europeu, excepto en catalán para medios locales si procede.' : params.language === 'en' ? 'Respond in English.' : 'Responde en español/catalán según el canal.'} Sé profesional y preciso.`,
     userMessage: `SITUACIÓN ACTUAL DEL INCIDENTE — Comarques de Girona
 
 Fallos totales      : ${state.faults.length}

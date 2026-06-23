@@ -25,6 +25,8 @@ export async function runOrchestrator(params: SimParams, emit: (e: SimEvent) => 
 
   emit({ type: 'action', agent: 'orchestrator', system: 'SAP AI Core Orchestration', msg: params.language === 'en'
     ? `Incident registered in AI Core — ${state.faults.length} faults detected, ${state.totalClients.toLocaleString()} customers affected`
+    : params.language === 'pt'
+    ? `Incidente registado em AI Core — ${state.faults.length} falhas detetadas, ${state.totalClients.toLocaleString()} clientes afetados`
     : `Incidente registrado en AI Core — ${state.faults.length} fallos detectados, ${state.totalClients.toLocaleString()} clientes afectados` });
 
   const safetyLimitMin = params.storm2Window === 'T+4h' ? 240
@@ -148,6 +150,8 @@ export async function runOrchestrator(params: SimParams, emit: (e: SimEvent) => 
     emit({ type: 'kpi', sla: slaScore, safety: safetyScore, efficiency: efficiencyScore, tiepi: tiepiValue, mttr: mttrValue });
     emit({ type: 'action', agent: 'orchestrator', system: 'SAP AI Core Orchestration', msg: params.language === 'en'
       ? `Cycle closed in AI Core — KPIs: SLA ${slaScore}%, Safety ${safetyScore}%, Efficiency ${efficiencyScore}%, TIEPI ${tiepiValue} min, MTTR ${mttrValue} min`
+      : params.language === 'pt'
+      ? `Ciclo encerrado em AI Core — KPIs: SLA ${slaScore}%, Segurança ${safetyScore}%, Eficiência ${efficiencyScore}%, TIEPI ${tiepiValue} min, MTTR ${mttrValue} min`
       : `Ciclo cerrado en AI Core — KPIs: SLA ${slaScore}%, Seguridad ${safetyScore}%, Eficiencia ${efficiencyScore}%, TIEPI ${tiepiValue} min, MTTR ${mttrValue} min` });
     emit({ type: 'done', elapsed: simTime(Date.now() - startTime) });
     return `Misión finalizada. KPIs: SLA=${slaScore}%, Seguridad=${safetyScore}%, Eficiencia=${efficiencyScore}%, TIEPI=${tiepiValue}min, MTTR=${mttrValue}min`;
@@ -198,6 +202,8 @@ No escribas análisis extensos entre fases — una frase de transición es sufic
 Nunca omitas invoke_crew_dispatch, invoke_resource ni invoke_comms.
 ${params.language === 'en'
   ? 'CRITICAL LANGUAGE RULE: You MUST write ALL output in English — every transition phrase, every summary, every reasoning step. No Spanish allowed.'
+  : params.language === 'pt'
+  ? 'REGRA DE IDIOMA CRÍTICA: DEVES escrever TODA a saída em Português Europeu — cada frase de transição, cada resumo, cada passo de raciocínio. Não uses Espanhol nem Inglês.'
   : 'Responde en español.'}`;
 
   const userMessage = `${params.language === 'en' ? '[RESPOND IN ENGLISH ONLY]\n\n' : ''}INCIDENTE ACTIVO — Comarques de Girona — T+00:00
