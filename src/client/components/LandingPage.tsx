@@ -96,9 +96,9 @@ export function LandingPage({ onEnter }: Props) {
           className="ml-auto flex items-center gap-1 px-2 h-7 rounded-lg text-xs font-bold"
           style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer', outline: 'none' }}
         >
-          <option value="es">🌐 ES</option>
-          <option value="en">🌐 EN</option>
-          <option value="pt">🌐 PT</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+          <option value="pt">🇵🇹 PT</option>
         </select>
 
         {/* Theme picker */}
