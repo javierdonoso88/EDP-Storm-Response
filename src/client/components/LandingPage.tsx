@@ -89,14 +89,17 @@ export function LandingPage({ onEnter }: Props) {
         <span className="text-sm font-semibold" style={{ color: 'var(--text-ghost)', margin: '0 2px' }}>|</span>
         <span className="text-sm font-semibold tracking-wide" style={{ color: 'var(--text-muted)' }}>Storm Response Commander</span>
 
-        {/* Language toggle */}
-        <button
-          onClick={cycleLang}
-          className="ml-auto flex items-center gap-1 px-2.5 h-7 rounded-lg text-xs font-bold"
-          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer' }}
+        {/* Language selector */}
+        <select
+          value={lang}
+          onChange={e => setLang(e.target.value as 'es' | 'en' | 'pt')}
+          className="ml-auto flex items-center gap-1 px-2 h-7 rounded-lg text-xs font-bold"
+          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer', outline: 'none' }}
         >
-          🌐 {t.lang.toggle}
-        </button>
+          <option value="es">🌐 ES</option>
+          <option value="en">🌐 EN</option>
+          <option value="pt">🌐 PT</option>
+        </select>
 
         {/* Theme picker */}
         <div className="relative flex-shrink-0" ref={themePickerRef}>

@@ -126,14 +126,17 @@ export default function App() {
           <span className="text-xs font-mono whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>{state.elapsedLabel}</span>
         </div>
 
-        {/* Language toggle */}
-        <button
-          onClick={cycleLang}
-          className="flex items-center gap-1 px-2.5 h-7 rounded-lg text-xs font-bold"
-          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer' }}
+        {/* Language selector */}
+        <select
+          value={lang}
+          onChange={e => setLang(e.target.value as 'es' | 'en' | 'pt')}
+          className="flex items-center gap-1 px-2 h-7 rounded-lg text-xs font-bold"
+          style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer', outline: 'none' }}
         >
-          🌐 {t.lang.toggle}
-        </button>
+          <option value="es">🌐 ES</option>
+          <option value="en">🌐 EN</option>
+          <option value="pt">🌐 PT</option>
+        </select>
 
         {/* Theme picker dropdown */}
         <div className="relative flex-shrink-0" ref={themePickerRef}>

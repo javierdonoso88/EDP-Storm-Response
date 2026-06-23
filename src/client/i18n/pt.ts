@@ -1,7 +1,7 @@
 import type { Translations } from './es';
 
 export const pt: Translations = {
-  lang: { toggle: 'ES' },
+  lang: {},
   themes: { dark: 'Escuro', joule: 'SAP Joule', iberdrola: 'Iberdrola' },
   nav: { openSimulator: 'Abrir Simulador →', back: 'Início' },
   hero: {

@@ -1,7 +1,5 @@
 export interface Translations {
-  lang: {
-    toggle: string;
-  };
+  lang: Record<string, never>;
   themes: {
     dark: string;
     joule: string;
@@ -207,7 +205,7 @@ export interface Translations {
 }
 
 export const es: Translations = {
-  lang: { toggle: 'EN' },
+  lang: {},
   themes: { dark: 'Oscuro', joule: 'SAP Joule', iberdrola: 'Iberdrola' },
   nav: { openSimulator: 'Abrir Simulador →', back: 'Inicio' },
   hero: {
