@@ -31,7 +31,7 @@ export default function App() {
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const themePickerRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
-  const { lang, setLang } = useLanguage();
+  const { lang, setLang, cycleLang } = useLanguage();
   const t = useT();
 
   const { state, startSimulation, tickAgentProgress } = useSimulation(initialFaults);
@@ -128,7 +128,7 @@ export default function App() {
 
         {/* Language toggle */}
         <button
-          onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
+          onClick={cycleLang}
           className="flex items-center gap-1 px-2.5 h-7 rounded-lg text-xs font-bold"
           style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer' }}
         >

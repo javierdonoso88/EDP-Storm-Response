@@ -43,7 +43,7 @@ export function LandingPage({ onEnter }: Props) {
   const [showThemePicker, setShowThemePicker] = useState(false);
   const themePickerRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
-  const { lang, setLang } = useLanguage();
+  const { lang, setLang, cycleLang } = useLanguage();
   const t = useT();
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function LandingPage({ onEnter }: Props) {
 
         {/* Language toggle */}
         <button
-          onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
+          onClick={cycleLang}
           className="ml-auto flex items-center gap-1 px-2.5 h-7 rounded-lg text-xs font-bold"
           style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--accent)', cursor: 'pointer' }}
         >
