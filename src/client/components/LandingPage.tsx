@@ -207,8 +207,13 @@ export function LandingPage({ onEnter }: Props) {
 
         <h1 className={`font-black leading-none mb-5 ${fade(100)}`}
           style={{ fontSize: 'clamp(2.8rem, 7.5vw, 6rem)', letterSpacing: '-0.03em', color: 'var(--text-primary)' }}>
-          Storm Response<br />
-          <span style={{ color: 'var(--accent)' }}>Commander</span>
+          {lang === 'en' ? (
+            <>Storm Response<br /><span style={{ color: 'var(--accent)' }}>Commander</span></>
+          ) : lang === 'es' ? (
+            <>Gestión de Respuesta a<br /><span style={{ color: 'var(--accent)' }}>Tempestades</span></>
+          ) : (
+            <>Gestão de Resposta a<br /><span style={{ color: 'var(--accent)' }}>Tempestades</span></>
+          )}
         </h1>
 
         <p className={`max-w-2xl text-lg leading-relaxed mb-3 ${fade(200)}`} style={{ color: 'var(--text-secondary)' }}>
