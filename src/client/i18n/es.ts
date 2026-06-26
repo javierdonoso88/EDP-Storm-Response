@@ -256,7 +256,7 @@ export const es: Translations = {
     footer: 'SAP BTP Cloud Foundry · SAP AI Core · SAP Joule',
   },
   app: {
-    title: 'Storm Response Commander',
+    title: 'Gestión de Respuesta a Tempestades',
     standby: 'Standby', running: 'En ejecución', done: '✓ Completado',
     report: 'Ver Informe', window: 'VENTANA',
   },

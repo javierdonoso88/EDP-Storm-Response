@@ -100,7 +100,7 @@ export function LandingPage({ onEnter }: Props) {
       >
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/1280px-SAP_2011_logo.svg.png" alt="SAP" style={{ height: 17 }} />
         <span className="text-sm font-semibold" style={{ color: 'var(--text-ghost)', margin: '0 2px' }}>|</span>
-        <span className="text-sm font-semibold tracking-wide" style={{ color: 'var(--text-muted)' }}>Storm Response Commander</span>
+        <span className="text-sm font-semibold tracking-wide" style={{ color: 'var(--text-muted)' }}>{t.app.title}</span>
 
         {/* Language picker dropdown */}
         <div className="ml-auto relative flex-shrink-0" ref={langPickerRef}>

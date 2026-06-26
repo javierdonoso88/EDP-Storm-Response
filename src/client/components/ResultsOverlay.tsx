@@ -263,7 +263,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
 <html lang="${t.lang.toggle === 'ES' ? 'en' : 'es'}">
 <head>
 <meta charset="UTF-8"/>
-<title>${t.results.pdfTitle} — Storm Response Commander</title>
+<title>${t.results.pdfTitle} — ${t.app.title}</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1e293b; padding: 32px 40px; font-size: 13px; }
@@ -304,7 +304,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
 </head>
 <body>
   <h1>${t.results.pdfTitle}</h1>
-  <div class="subtitle">Storm Response Commander · EDP · Área Metropolitana de Lisboa · ${t.results.completed} · ${elapsedLabel}</div>
+  <div class="subtitle">${t.app.title} · EDP · Área Metropolitana de Lisboa · ${t.results.completed} · ${elapsedLabel}</div>
 
   <div class="section-label">${t.results.pdfKpis}</div>
   <div class="kpi-row">
@@ -394,7 +394,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
   ` : ''}
 
   <div class="footer">
-    <span>Storm Response Commander · EDP · Área Metropolitana de Lisboa</span>
+    <span>${t.app.title} · EDP · Área Metropolitana de Lisboa</span>
     <span>${t.results.pdfGenerated} ${new Date().toLocaleString(t.lang.toggle === 'ES' ? 'en-GB' : 'es-ES')}</span>
   </div>
 </body>
@@ -596,7 +596,7 @@ export function ResultsOverlay({ faults, totalClients, kpi, agentLogs, commsMess
         <div className="flex items-center justify-between px-6 py-4 flex-shrink-0 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="flex items-center gap-2">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/1280px-SAP_2011_logo.svg.png" alt="SAP" style={{ height: 13, opacity: 0.25 }} />
-            <span className="text-[11px] font-mono" style={{ color: 'var(--text-ghost)' }}>Storm Response Commander · EDP · Área Metropolitana de Lisboa</span>
+            <span className="text-[11px] font-mono" style={{ color: 'var(--text-ghost)' }}>{t.app.title} · EDP · Área Metropolitana de Lisboa</span>
           </div>
           <div className="flex items-center gap-2">
             <button
